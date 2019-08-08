@@ -31,4 +31,8 @@ Correction par rapport à ce que j'avais prévu :
 2ème commit, je n'ai mis à jour que le fichier README.txt
 3ème commit : fichier README.txt mis à jour + ce qui était prévu (3 fichiers python + un répertoire avec 3 fichiers texte)
 
-iDonc ce qui était prévu en 3 & 4 sera effectué en 4 & 5
+Donc ce qui était prévu en 3 & 4 sera effectué en 4 & 5
+
+4ème commit : 
+On ajoute les fichiers suivants : Lisez-moi.txt fonctionServeur.py labyrinthe.ini monClient.py monServeur.py monTimer.py
+On modife les fichiers : carte.py, labyrinthe.py

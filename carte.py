@@ -1,6 +1,9 @@
 # -*-coding:Utf-8 -*
 
-"""Ce module contient la classe Carte."""
+"""Ce module contient la classe Carte.
+    Avec cette évolution (version client serveur ==> la carte ne doit plus contenir de position du robot
+    ==> Si on trouve un bobot, on le remplace pas un espace (cela évite de refaire les cartes existantes)
+"""
 def creer_labyrinthe_depuis_chaine(chaine):
     """ on transforme la chaine en 1 type dict pour stocker le labyrinthe
         (on aura un clé représentée par un tuple : (ordonnee, abcisse))
@@ -9,8 +12,7 @@ def creer_labyrinthe_depuis_chaine(chaine):
             '.' : pour une porte
             ' ' : pour un vide
             'U' : pour la sortie
-            'X' : la position de départ pour le robot
-                  (donc forcément un vide une fois que le robot partira de cette position)
+            'X' : la position de départ pour le robot ==> si existe, on remplace par un vide
     """
     lab=dict()
     i=1
@@ -20,8 +22,10 @@ def creer_labyrinthe_depuis_chaine(chaine):
             j += 1
             i = 1
         else:
-             lab[j,i] = c
-             i += 1
+            if c.upper()=='X':
+                c=' '
+            lab[j,i] = c
+            i += 1
     return lab
 
 
@@ -47,6 +51,7 @@ class Carte:
                 ordonnee=k
         return "("+str(abcisse)+"x"+str(ordonnee)+")"
 
+    #A priori cette version n'est plus utile car les cartes initiales ne doivent plus contenir de robot
     def posRobot(self):
         """ Retourne la position du robot sur la carte """
         for cle,val in self.labyrinthe.items():

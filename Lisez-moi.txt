@@ -1,0 +1,74 @@
+Ce document a été écrit juste pour donner quelques détails sur ce que j'ai fait : 
+
+Le répertoire s'appelle : labyrinthe2
+Il a 2 sous répertoires : 
+	cartes	==> contient les fichiers pour la contruction des labyrinthes
+	test	==> contient 2 fichiers de tests unitaires  (pour lancer tous les tests depuis le répertoire labyrinthe2 : python.exe -m unittest discover test "*.py"
+
+Les fichiers se trouvant dans le répertoire du projet : 
+	- labyrinthe.ini 	==> contient les constantes pour le serveur et le client
+	- monClient.py		==> le programme utilisé pour les joueurs
+	- monServeur.py		==> le programme à lancer pour le serveur
+	- carte.py			==> module utilisé pour la construction de la carte
+	- labyrinthe.py		==> Le module pour jouer au labyrinthe
+	- fonctionServeur.py	==> diverses fonctions utiles pour la gestion du serveur
+	- monTimer.py		==> mon timer (pour savoir au bout de combien de temps un délai est dépassé)
+
+
+Algo pour le serveur :
+
+1 : initialisation (et choix d'une carte)
+
+2 : boucle d'attente de la connexion des joueurs
+	3 Cas de sortie de la boucle : 
+		a) temps d'attente dépassée
+		b) un joueur a demandé de commencer le jeu ==> (j'ai retiré cette condition car sous Windows quelques soucis avec affichage)
+		c) le nombre de joueur maximum pouvant se connecter est atteint
+	
+	A chaque fois qu'un joueur se connecte : 
+		- on ajoute le robot dans le labyrinthe (de manière aléatoire)
+			(pour le serveur, chaque robot sera représenté pour un nombre, correspondant au numéro du joueur)
+		- on renvoie le labyrinthe à tous les joueurs
+
+3 : Si au moins 1 joueur de connecté ==>
+	On envoie le labyrinthe créé à l'ensemble des joueurs
+    Sinon ==>
+	On stoppe le serveur
+
+4 : boucle du jeu proprement dit 
+	Pour chacun des joueurs (chacun leur tour) : 
+		On envoie un message au joueur qui doit joueur pour qu'il donne son choix (coup à jouer) 
+		si coup valide ==>
+			a) on effectue l'action demandée
+			   si l'action permet au joueur de sortir du labyrinthe ==> on stoppe le jeu en signalant à tous les joueurs qu'il a gagné
+			b) on modifie le labyrinthe en conséquence
+			c) on envoie le nouveau labyrinthe à tous les joueurs (labyrinthe est différent en fonctions des joueurs pour distinguer robot)
+				A noter qu'on affiche aussi le labyrinthe sur la console du serveur pour visualiser où on en est
+		sinon (coup invalide) ==>
+			a) on signale au joueur que coup invalide
+			b) on passe au joueur suivant (donc pas besoin de renvoyer le labyrinthe)
+
+Algo pour le client :
+Problème rencontré pour le client : 
+	Les messages reçus par le serveur ne peuvent pas être affichés si on est en attente d'un input sur le joueur
+	Si j'avais été sur Linux ou Unix j'aurais eu une solution en utilisant le package signal pour interrompre la fonction input
+	Malheureusement je suis sous Windows, et je n'ai pas trouvé comment faire.  (input est une fonction qu'on ne peut pas interrompre, qu'on soit dans un thread ou non).
+	Il y aurait peut-être une solution en pasant par les files d'attente, mais je n'ai pas encore eu le temps de regarder comment cela fonctionne.
+	
+	Donc, j'ai modifié légèrement l'énoncé pour avoir quelque chose de correct et utilisable : 
+	
+	1. ==> Au départ, le jeu commence que lorsque le nombre de joueurs est atteint, ou après un certain délai
+	2. ==> Pendant le jeu : plus simple à résoudre puisque les joueurs doivent jouer chacun leur tour.
+		Le serveur envoi un message au joueur dont c'est le tour de jouer, donc dans le thread de réception des messages du serveur, on positionne 
+		une variable qui indique qu'on attend le coup du joueur. Une fois que le joueur a donné son coup, on modifie l'état de cette variable pour ne plus bloquer sur la fonction "input"  
+
+
+ Quelques détails concernant le fichier labyrinthe : 
+	En interne, les robots sont identifiés par le numéro du joueur (le numéro conrrespondant à leur arrivée dans le jeu)
+	Postionnement d'un robot aléatoirement dans le jeu : 
+		on crée une liste de toutes les positions vides, puis on pioche au hasard dedans via la fonction random
+
+
+
+
+
