@@ -26,3 +26,9 @@ Vous devez créer un repository Git simple contenant :
   - ajout de scripts python permettant d'automatiser les tests unitaires du module précédent
 
 
+Correction par rapport à ce que j'avais prévu : 
+
+2ème commit, je n'ai mis à jour que le fichier README.txt
+3ème commit : fichier README.txt mis à jour + ce qui était prévu (3 fichiers python + un répertoire avec 3 fichiers texte)
+
+iDonc ce qui était prévu en 3 & 4 sera effectué en 4 & 5
