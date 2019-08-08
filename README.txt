@@ -17,7 +17,7 @@ Vous devez créer un repository Git simple contenant :
   - Init du repository avec fichier README.txt et un autre fichier (script python utilisé dans un autre cours)
 
   2ème commit : 
-  - Ajout de tous les autres script python nécessaire pour le module d'un jeu appelé labyrinthe
+  - Ajout de tous les autres scripts python nécessaires pour le module d'un jeu appelé labyrinthe
 
   3ème commit : 
   - Modification des scripts python + ajout de nouveau script pour transformé le jeu labyrinthe en mode client / serveur
